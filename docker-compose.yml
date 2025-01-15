@@ -25,21 +25,21 @@ services:
     volumes:
       - ./backend:/app  # Mounts the backend directory for live reloading
       - /app/node_modules  # Anonymous volume to prevent overwriting node_modules
-    environment:
-      - POSTGRES_HOST
-      - POSTGRES_PORT
-      - POSTGRES_DB
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - REDIS_URL
-      - S3_ENDPOINT
-      - S3_ACCESS_KEY
-      - S3_SECRET_ACCESS_KEY
-      - S3_BUCKET_NAME
-      - API_PORT
-      - OPENAI_API_KEY
-    # env_file:
-    #   - .env
+    # environment:
+    #   - POSTGRES_HOST
+    #   - POSTGRES_PORT
+    #   - POSTGRES_DB
+    #   - POSTGRES_USER
+    #   - POSTGRES_PASSWORD
+    #   - REDIS_URL
+    #   - S3_ENDPOINT
+    #   - S3_ACCESS_KEY
+    #   - S3_SECRET_ACCESS_KEY
+    #   - S3_BUCKET_NAME
+    #   - API_PORT
+    #   - OPENAI_API_KEY
+    env_file:
+      - .env
     command: sh -c "npm install && npm run dev"
     depends_on:
       - postgres
@@ -58,6 +58,17 @@ services:
       - "5432:5432"  # Maps port 5432 on the host to port 5432 in the container
 
   # Redis + RedisStack database
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+      - "${REDIS_INSIGHT_PORT}:${REDIS_INSIGHT_PORT}"
+    volumes:
+      - redis_data:/data
+    environment:
+      - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
+      - REDISINSIGHT_DEFAULT_USERNAME=default
+      - REDISINSIGHT_DEFAULT_PASSWORD=${REDIS_INSIGHT_PASSWORD}
 
   # MinIO for S3-compatible object storage
 
@@ -65,3 +76,4 @@ services:
 # Named volumes for persisting data
 volumes:
   postgres_data:
+  redis_data:
