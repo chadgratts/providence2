@@ -15,7 +15,7 @@ echo "Checking Redis..."
 nc -zv localhost 6379 2>&1
 
 echo "Checking Redis Insight Console..."
-curl -s -o /dev/null -w "%{http_code}" http://localhost:5540
+curl -s -o /dev/null -w "%{http_code}" http://localhost:8001
 echo ""
 
 echo "Checking MinIO..."

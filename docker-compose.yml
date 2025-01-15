@@ -61,14 +61,14 @@ services:
   redis:
     image: redis/redis-stack:latest
     ports:
-      - "${REDIS_PORT}:${REDIS_PORT}"
-      - "${REDIS_INSIGHT_PORT}:${REDIS_INSIGHT_PORT}"
+      - "${REDIS_PORT}:6379"
+      - "${REDIS_INSIGHT_PORT}:8001"
     volumes:
       - redis_data:/data
     environment:
       - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
-      - REDISINSIGHT_DEFAULT_USERNAME=default
-      - REDISINSIGHT_DEFAULT_PASSWORD=${REDIS_INSIGHT_PASSWORD}
+      # - REDISINSIGHT_DEFAULT_USERNAME=default
+      # - REDISINSIGHT_DEFAULT_PASSWORD=${REDIS_INSIGHT_PASSWORD}
 
   # MinIO for S3-compatible object storage
 
