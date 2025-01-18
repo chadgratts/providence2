@@ -22,6 +22,7 @@ services:
       target: development
     ports:
       - "5001:5001"  # Maps port 5001 on the host to port 5001 in the container
+      - "9229:9229" # Maps port 9229 on the host to port 9229 in the container for debugging
     volumes:
       - ./backend:/app  # Mounts the backend directory for live reloading
       - /app/node_modules  # Anonymous volume to prevent overwriting node_modules
@@ -40,7 +41,7 @@ services:
     #   - OPENAI_API_KEY
     env_file:
       - .env
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "npm install && npm run dev:debug"
     depends_on:
       - postgres
 
@@ -71,9 +72,20 @@ services:
       # - REDISINSIGHT_DEFAULT_PASSWORD=${REDIS_INSIGHT_PASSWORD}
 
   # MinIO for S3-compatible object storage
-
+  minio:
+    image: minio/minio
+    ports:
+      - "${S3_PORT}:9000"
+      - "${S3_CONSOLE_PORT}:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
+    command: server /data --console-address ":9001"
 
 # Named volumes for persisting data
 volumes:
   postgres_data:
   redis_data:
+  minio_data:

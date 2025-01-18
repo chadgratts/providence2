@@ -17,6 +17,9 @@ COPY . .
 
 EXPOSE 5001
 
+#debug port
+EXPOSE 9229 
+
 CMD ["npm", "run", "dev"]
 
 # Production stage (if needed in the future)

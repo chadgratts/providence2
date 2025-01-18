@@ -7,6 +7,7 @@
     "build": "npx tsc",
     "start": "node dist/server.js",
     "dev": "nodemon",
+    "dev:debug": "node --inspect=0.0.0.0:9229 -r ts-node/register ./src/server.ts",
     "test": "vitest"
   },
   "keywords": [],

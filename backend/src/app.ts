@@ -4,8 +4,7 @@ import { json, urlencoded } from 'body-parser';
 
 import psqlRoutes from './routes/psqlRoutes';
 import redisRoutes from './routes/redisRoutes';
-// import s3Routes from './routes/s3Routes';
-
+import s3Routes from './routes/s3Routes';
 
 const app = express();
 
@@ -17,6 +16,6 @@ app.use(cors());
 // Test routes
 app.use('/api/psql', psqlRoutes);
 app.use('/api/redis', redisRoutes);
-// app.use('/api/s3', s3Routes);
+app.use('/api/s3', s3Routes);
 
 export default app;

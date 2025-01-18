@@ -9,12 +9,9 @@ export class RedisService {
       throw new Error('REDIS_URL is not defined');
     }
     this.redis = new Redis(redisUrl);
-
-    this.redis.on('connect', () => console.log('Connected to Redis!'));
-    this.redis.on('error', (err) => console.error('Redis connection error:', err));
   }
 
-  async setSession(key: string, data: string): Promise<void> {
+  setSession = async (key: string, data: string): Promise<void> => {
     try {
       console.log('Setting session in Redis:', key, data);
       await this.redis.call('JSON.SET', key, '.', JSON.stringify(data));
@@ -24,7 +21,7 @@ export class RedisService {
     }
   }
 
-  async getSession(key: string): Promise<string | null> {
+  getSession = async (key: string): Promise<string | null> => {
     try {
       const data = await this.redis.call('JSON.GET', key);
       return data as string | null;
