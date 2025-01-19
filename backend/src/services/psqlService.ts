@@ -23,15 +23,15 @@ export class PsqlService {
     }
   }
 
-  addSession = async (projectID: string, sessionID: string, session_start: Date): Promise<any> => {
+  addSession = async (project_id: string, session_id: string, session_start: Date): Promise<any> => {
     try {
       const result = await this.pool.query(
         'INSERT INTO sessions (project_id, session_id, events_file_name, session_start) VALUES ($1, $2, $3, $4) RETURNING *',
-          [1, sessionID, `${sessionID}-events.txt`, session_start]
+          [1, session_id, `${session_id}-events.txt`, session_start]
       );
       return result.rows[0];
     } catch (error) {
-      console.error(`Error adding session ${sessionID} to PSQL`, error);
+      console.error(`Error adding session ${session_id} to PSQL`, error);
       throw error;
     }
   }
