@@ -8,17 +8,31 @@ const redis = new RedisService();
 const psql = new PsqlService();
 
 router.post('/', async (req, res) => {
-  console.log('POST /record');
   try {
     const { project_id, session_id, timestamp, events } = req.body;
-    const sessionExists = await redis.sessionExists(session_id);
 
-    if (!sessionExists) {
-      await psql.addSession(project_id, session_id, new Date().toISOString());
+    const serverTimestamp = new Date().toISOString();
+    const projectMetadata = await psql.getProject(project_id);
+
+    // if (!sessionExists) {
+    //   await psql.addSession(project_id, session_id, serverTimestamp);
+    // }
+
+    if (!projectMetadata) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    const sessionMetadata = await psql.getSession(session_id);
+
+    if (sessionMetadata) {
+      await psql.updateSessionActivity(session_id, serverTimestamp);
+    } else {
+      await psql.addSession(session_id, project_id, serverTimestamp);
     }
 
     await redis.addSession(session_id, JSON.stringify(events));
-    res.status(201).send('Session recorded');
+
+    res.status(201).json({ message: 'Session processed successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to save data' });
   }
