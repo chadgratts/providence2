@@ -23,16 +23,26 @@ export class PsqlService {
     }
   }
 
-  addSession = async (id: number, data: string) => {
+  addSession = async (projectID: string, sessionID: string, session_start: Date): Promise<any> => {
     try {
       const result = await this.pool.query(
-        'INSERT INTO sessions (session_id, recording_data) VALUES ($1, $2) RETURNING *',
-          [id, data]
+        'INSERT INTO sessions (project_id, session_id, events_file_name, session_start) VALUES ($1, $2, $3, $4) RETURNING *',
+          [1, sessionID, `${sessionID}-events.txt`, session_start]
       );
       return result.rows[0];
     } catch (error) {
-      console.error(`Error adding session ${id} to PSQL`, error);
+      console.error(`Error adding session ${sessionID} to PSQL`, error);
       throw error;
     }
   }
 }
+
+// CREATE TABLE sessions (
+//   id PK SERIAL,
+//   project_id FK INTEGER NOT NULL,
+//   session_id VARCHAR(255),
+//   events_file_name VARCHAR (255) NOT NULL,
+//   session_summary VARCHAR (5000),                           
+//   session_start TIMESTAMP NOT NULL,
+//   session_end TIMESTAMP
+// );
