@@ -14,7 +14,7 @@ export class RedisController {
   addSession = async (req: Request, res: Response): Promise<void> => {
     const { key, data } = req.body;
     try {
-      await this.redisService.addSession(key, data);
+      await this.redisService.addSession(key, JSON.stringify(data));
       res.status(200).json({ message: `Your data ${data} was stored :)` });
     } catch (error) {
       res.status(500).json({ error: 'Failed to save data' });

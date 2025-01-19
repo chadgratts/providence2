@@ -27,7 +27,7 @@ export class RedisService {
     }
   }
 
-  private sessionExists = async (key: string): Promise<boolean> => {
+  sessionExists = async (key: string): Promise<boolean> => {
     try {
       const data = await this.redis.call('JSON.GET', key);
       return Boolean(data);
