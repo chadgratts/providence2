@@ -14,10 +14,6 @@ router.post('/', async (req, res) => {
     const serverTimestamp = new Date().toISOString();
     const projectMetadata = await psql.getProject(project_id);
 
-    // if (!sessionExists) {
-    //   await psql.addSession(project_id, session_id, serverTimestamp);
-    // }
-
     if (!projectMetadata) {
       return res.status(404).json({ error: 'Project not found' });
     }
@@ -25,7 +21,7 @@ router.post('/', async (req, res) => {
     const sessionMetadata = await psql.getSession(session_id);
 
     if (sessionMetadata) {
-      await psql.updateSessionActivity(session_id, serverTimestamp);
+      await psql.updateSessionMetadata(session_id, serverTimestamp); // changed from activity to metadata
     } else {
       await psql.addSession(session_id, project_id, serverTimestamp);
     }
