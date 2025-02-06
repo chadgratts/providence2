@@ -60,11 +60,12 @@ export class PsqlService {
 }
 
 // CREATE TABLE sessions (
-//   id PK SERIAL,
-//   project_id FK INTEGER NOT NULL,
+//   id SERIAL PRIMARY KEY,
+//   project_id INTEGER NOT NULL,
 //   session_id VARCHAR(255),
 //   events_file_name VARCHAR (255) NOT NULL,
 //   session_summary VARCHAR (5000),                           
 //   session_start TIMESTAMP NOT NULL,
-//   session_end TIMESTAMP
+//   last_activity_at TIMESTAMP,
+//   CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id)
 // );
