@@ -1,8 +1,8 @@
 import * as AIConfig from '../utils/aiModelsConfig';
 
-abstract class AIParent {
+export default abstract class AIParent {
   abstract maxPromptLength: number;
-  abstract queryLLM(data: string, prompt: string): Promise<string>;
+  abstract queryLLM(data: string, prompt: string): Promise<string | undefined>;
   
   splitIntoChunks = (data: string) => { // add string[] to the function signature
     const chunks: string[] = [];
