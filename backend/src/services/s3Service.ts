@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, HeadBucketCommand, CreateBucketCommand } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
 export class S3Service {
@@ -28,6 +28,7 @@ export class S3Service {
       },
       forcePathStyle: true, // Needed for MinIO, doesn't affect S3
     });
+    this.createBucket();
   }
 
   getFile = async (fileName: string) => { // Promise<string>
@@ -89,6 +90,20 @@ export class S3Service {
     } else {
       // For S3
       return `https://${this.bucketName}.s3.${this.region}.amazonaws.com/${fileName}`;
+    }
+  }
+
+  private async createBucket(): Promise<void> {
+    try {
+      await this.s3Client.send(new HeadBucketCommand({ Bucket: this.bucketName }));
+      console.log(`Bucket ${this.bucketName} already exists.`);
+    } catch (error: any) {
+      if (error.name === 'NotFound') {
+        await this.s3Client.send(new CreateBucketCommand({ Bucket: this.bucketName }));
+        console.log(`Bucket ${this.bucketName} create successfully.`);
+      } else {
+        console.error('Error checking bucket:', error);
+      }
     }
   }
 }
