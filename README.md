@@ -8,7 +8,7 @@ The purpose of this rebuild is to:
 - **Reflect on engineering decisions** I made originally and document what I'd change
 - **Prepare for scaling/production-readiness** scenarios by improving modularity and clarity
 
-Rather than treating this as a “new project,” I’m treating it as a learning artifact - something that shows how I think, build, and improve my own work over time.
+Rather than treating this as a “new project,” I’m treating it as a learning artifact, as something that shows how I think, build, and improve my own work over time :)
 
 ### Key Features
 - RAG (retrieval-augmented generation) with OpenAI for summarization
