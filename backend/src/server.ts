@@ -1,15 +1,7 @@
-import express from 'express';
+import app from './app';
 
-const app = express();
-const port = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5001;
 
-app.use(express.json());
-
-// Basic health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
