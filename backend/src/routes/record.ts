@@ -24,7 +24,7 @@ router.post('/record', async (req, res) => {
     if (!sessionMetadata) {
       await psql.addSession(sessionID, projectID, serverTimestamp);
     } else {
-      await psql.updateSessionActivity(sessionID, serverTimestamp);
+      await psql.updateSessionMetadata(sessionID, serverTimestamp);
     }
 
     // Add session event data to Redis
