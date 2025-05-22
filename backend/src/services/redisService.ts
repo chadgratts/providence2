@@ -6,6 +6,9 @@ export class RedisService {
   private connection: Redis;
 
   constructor() {
+    if (!config.REDIS.URL) {
+      throw new Error('Redis URL is not configured');
+    }
     this.connection = new Redis(config.REDIS.URL);
   }
 
@@ -13,6 +16,10 @@ export class RedisService {
   async getRecording(key: string): Promise<string | null> {
     try {
       const data = await this.connection.call('JSON.GET', key);
+      if (data === null) return null;
+      if (typeof data !== 'string') {
+        throw new Error('Invalid data type returned from Redis');
+      }
       return data;
     } catch (error) {
       console.error('Redis recording data fetch error:', error);
