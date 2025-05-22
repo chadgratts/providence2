@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { RedisService } from '../services/redisService';
 import { PsqlService } from '../services/psqlService';
 const router = express.Router();
@@ -6,7 +6,7 @@ const router = express.Router();
 const redis = new RedisService();
 const psql = new PsqlService();
 
-router.post('/record', async (req, res) => {
+router.post('/record', async (req: Request, res: Response): Promise<void>=> {
   const { projectID, sessionID, timestamp, events } = req.body;
   const serverTimestamp = new Date().toISOString(); // UTC
   

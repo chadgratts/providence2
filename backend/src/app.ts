@@ -4,7 +4,7 @@ import { json, urlencoded } from 'body-parser';
 import psqlRoutes from './routes/psqlRoutes';
 import s3Routes from './routes/s3Routes';
 import redisRoutes from './routes/redisRoutes';
-
+import recordRoutes from './routes/record';
 const app = express();
 
 // Middleware
@@ -16,5 +16,6 @@ app.use(cors());
 app.use('/api/psql', psqlRoutes);
 app.use('/api/s3', s3Routes);
 app.use('/api/redis', redisRoutes);
+app.use('/api', recordRoutes);
 
 export default app;
