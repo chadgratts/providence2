@@ -24,8 +24,8 @@ abstract class AIParent {
     let summaries = await this.summarizeSessionChunks(chunks);
 
     if (summaries.length > 1) {
-      summaries = summaries.join(' ');
-      return await this.query(AIConfig.SessionSummariesPrompt, summaries);
+      let combinedSummaries = summaries.join(' ');
+      return await this.query(AIConfig.SessionSummariesPrompt, combinedSummaries);
     } else {
       return summaries[0];
     }
