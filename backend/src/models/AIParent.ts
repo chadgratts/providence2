@@ -38,7 +38,14 @@ abstract class AIParent {
     const promises = chunks.map(chunk => this.query(AIConfig.SessionChunkPrompt, chunk));
     const summaries = await Promise.allSettled(promises);
 
-    return summaries.map(summary => summary.value);
+    return summaries.map(summary => {
+      if (summary.status === 'fulfilled') {
+        return summary.value;
+      } else {
+        console.error('Failed to summarize chunk:', summary.reason)
+        return '';
+      }
+    });
   } 
 }
 
