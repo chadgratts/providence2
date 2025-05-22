@@ -6,12 +6,15 @@ export class PsqlService {
   private connection: Pool;
 
   constructor() {
+    const portStr = config.POSTGRESQL.PORT;
+    const port = portStr && /^\d+$/.test(portStr) ? parseInt(portStr) : undefined;
+
     this.connection = new Pool({
       user: config.POSTGRESQL.USER,
       host: config.POSTGRESQL.HOST,
       database: config.POSTGRESQL.DATABASE,
       password: config.POSTGRESQL.PASSWORD,
-      port: config.POSTGRESQL.PORT,
+      port: port,
       ssl: {
         rejectUnauthorized: false, // Use this if your RDS instance requires SSL and you're testing locally
       },
