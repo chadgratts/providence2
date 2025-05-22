@@ -15,7 +15,8 @@ router.post('/record', async (req: Request, res: Response): Promise<void>=> {
     const projectMetadata = await psql.getProject(projectID);
     
     if (!projectMetadata) {
-      return res.status(400).json({ error: 'Invalid project' });
+      res.status(400).json({ error: 'Invalid project' });
+      return;
     }
 
     // Check for session metadata in PSQL
