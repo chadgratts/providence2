@@ -47,7 +47,7 @@ export class PsqlService {
   async addSession(projectID: string, sessionID: string, sessionStart: string): Promise<any> {
     try {
       const result = await this.connection.query(
-        'INSERT INTO sessions (projectID, sessionID, events_file_name, session_start, last_activity_at) VALUES ($1, $2, $3, $4, $5)',
+        'INSERT INTO sessions (project_id, session_id, events_file_name, session_start, last_activity_at) VALUES ($1, $2, $3, $4, $5)',
         [projectID, sessionID, `${sessionID}-events.txt`, sessionStart, sessionStart]
       );
       return result.rows[0];
