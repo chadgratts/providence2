@@ -68,6 +68,31 @@ export class PsqlService {
       throw error;
     }
   }
+
+  async getInactiveSessions(cutoffTime: string): Promise<any> {
+    try {
+      const result = await this.connection.query(
+        'SELECT id FROM sessions WHERE last_activity_at < $1 AND session_end IS NULL',
+        [cutoffTime]
+      );
+      return result.rows;
+    } catch (error) {
+      console.error('Error fetching inactive sessions', error);
+      throw error;
+    }
+  }
+  
+  async endSession(sessionId: string, timestamp: string): Promise<void> {
+    try {
+      await this.connection.query(
+        'UPDATE sessions SET session_end = $2 WHERE id = $1',
+        [sessionId, timestamp]
+      );
+    } catch (error) {
+      console.error(`Error ending session ${sessionId}`, error);
+      throw error;
+    }
+  }
 }
 
 // CREATE TABLE sessions (
