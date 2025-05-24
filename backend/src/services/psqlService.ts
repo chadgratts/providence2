@@ -15,9 +15,9 @@ export class PsqlService {
       database: config.POSTGRESQL.DATABASE,
       password: config.POSTGRESQL.PASSWORD,
       port: port,
-      ssl: {
-        rejectUnauthorized: false, // Use this if your RDS instance requires SSL and you're testing locally
-      },
+      // ssl: {
+      //   rejectUnauthorized: false, // Use this if your RDS instance requires SSL and you're testing locally
+      // },
     });
   }
 

@@ -20,9 +20,9 @@ export class PsqlController {
   };
 
   addSession = async (req: Request, res: Response): Promise<void> => {
-    const { id, data } = req.body;
+    const { projectID, sessionID } = req.body;
     try {
-      const result = await this.psqlService.addSession(id, data, new Date().toISOString());
+      const result = await this.psqlService.addSession(projectID, sessionID, new Date().toISOString());
       res.status(201).json(result);
     } catch (error) {
       console.error(`Error in addSession controller: ${error}`);
