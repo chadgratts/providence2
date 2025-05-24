@@ -60,7 +60,7 @@ export class PsqlService {
   async updateSessionMetadata(sessionID: string, timestamp: string): Promise<void> {
     try {
       await this.connection.query(
-        'UPDATE sessions SET last_activity_at = $1 WHERE is_active = t AND session_ID = $2',
+        'UPDATE sessions SET last_activity_at = $1 WHERE is_active = true AND sessionID = $2',
         [timestamp, sessionID]
       );
     } catch (error) {
