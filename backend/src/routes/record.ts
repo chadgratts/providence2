@@ -16,6 +16,7 @@ router.post('/', async (req: Request, res: Response): Promise<void>=> {
     const projectMetadata = await psql.getProject(projectID);
     
     if (!projectMetadata) {
+      console.log(`Project not found for ${projectID}. Rejecting.`);
       res.status(400).json({ error: 'Invalid project' });
       return;
     }
@@ -24,17 +25,20 @@ router.post('/', async (req: Request, res: Response): Promise<void>=> {
     const sessionMetadata = await psql.getActiveSession(sessionID);
 
     if (!sessionMetadata) {
+      console.log(`Active session not found for ${sessionID}. Creating...`);
       await psql.addSession(sessionID, projectID, serverTimestamp);
     } else {
+      console.log(`Active session found for ${sessionID}. Updating...`);
       await psql.updateSessionMetadata(sessionID, serverTimestamp);
     }
 
     // Add session event data to Redis
+    console.log(`Moving ${events.length} events for session ${sessionID} to Redis...`)
     await redis.addRecording(sessionID, JSON.stringify(events));
 
-    res.status(200).json({ message: 'Events batch processed successfully' });
+    res.status(200).json({ message: `Events batch for session ${sessionID} processed successfully` });
   } catch (error) {
-    console.error('Error processing batch:', error);
+    console.error(`Error processing batch for session ${sessionID}:`, error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
