@@ -32,10 +32,10 @@ export class PsqlService {
     }
   }
 
-  // Get session metadata
+  // Get an active session's metadata
   async getActiveSession(sessionID: string): Promise<any[]> {
     try {
-      const result = await this.connection.query('SELECT * FROM sessions WHERE session_id = $1 AND is_active = true', [sessionID]);
+      const result = await this.connection.query('SELECT * FROM sessions WHERE session_id = $1 AND is_active = TRUE', [sessionID]);
       return result.rows;
     } catch (error) {
       console.error(`Error fetching session ${sessionID} from PSQL`, error);
@@ -65,6 +65,19 @@ export class PsqlService {
       );
     } catch (error) {
       console.error(`Error updating session metadata for ${sessionID}`, error);
+      throw error;
+    }
+  }
+
+  async getCompletedSessions(projectID: string): Promise<any> {
+    try {
+      const result = await this.connection.query(
+        'SELECT * FROM sessions WHERE is_active = FALSE AND project_id = $1',
+        [projectID]
+      );
+      return result.rows;
+    } catch (error) {
+      console.error(`Error fetching completed sessions for project ${projectID} from PSQL`, error);
       throw error;
     }
   }
