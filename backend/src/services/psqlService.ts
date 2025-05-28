@@ -72,24 +72,25 @@ export class PsqlService {
   async getInactiveSessions(cutoffTime: string): Promise<any> {
     try {
       const result = await this.connection.query(
-        'SELECT id FROM sessions WHERE last_activity_at < $1 AND session_end IS NULL',
+        'SELECT * FROM sessions WHERE last_activity_at < $1 AND session_end IS NULL',
         [cutoffTime]
       );
       return result.rows;
     } catch (error) {
-      console.error('Error fetching inactive sessions', error);
+      console.error('Error fetching inactive sessions from PSQL', error);
       throw error;
     }
   }
   
-  async endSession(sessionId: string, timestamp: string): Promise<void> {
+  async endSession(sessionID: string, timestamp: string): Promise<void> {
     try {
       await this.connection.query(
-        'UPDATE sessions SET session_end = $2 WHERE id = $1',
-        [sessionId, timestamp]
+        'UPDATE sessions SET session_end = $2, is_active = FALSE WHERE session_id = $1 AND is_active = TRUE',
+        [sessionID, timestamp]
       );
+      console.log(`End metadata set for session ${sessionID} in PSQL`);
     } catch (error) {
-      console.error(`Error ending session ${sessionId}`, error);
+      console.error(`Error ending session ${sessionID} in PSQL`, error);
       throw error;
     }
   }
