@@ -26,7 +26,7 @@ router.post('/', async (req: Request, res: Response): Promise<void>=> {
     // Check for session metadata in PSQL
     const sessionMetadata = await psql.getActiveSession(sessionID);
 
-    if (!sessionMetadata) {
+    if (!sessionMetadata || sessionMetadata.length === 0) {
       console.log(`Active session not found in PSQL for ${sessionID}. Creating...`);
       await psql.addSession(projectID, sessionID, serverTimestamp);
     } else {
