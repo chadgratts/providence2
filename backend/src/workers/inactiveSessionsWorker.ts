@@ -18,7 +18,7 @@ async function checkInactiveSessions() {
     console.log(`[worker] Found ${inactiveSessions.length} inactive sessions`);
 
     for (const session of inactiveSessions) {
-      await handleSessionEnd(session.session_id, session.file_name);
+      await handleSessionEnd(session.session_id, session.events_file_name);
     }
   } catch (error) {
     console.error('[worker] Error checking inactive sessions', error);
