@@ -1,5 +1,5 @@
 import styles from './SessionCard.module.css'
-import { Session } from '../../Types';
+import type { Session } from '../../Types';
 
 
 interface SessionCardProps {
