@@ -4,7 +4,7 @@ import SessionSidebar from '../SessionSidebar';
 import Player from '../Player/Player.tsx';
 import styles from './MainPage.module.css'
 import axios from 'axios'
-import { Session } from '../../Types/index.ts'
+import type { Session } from '../../Types/index.ts'
 import SessionInfoBox from '../SessionInfoBox/SessionInfoBox.tsx';
 
 function MainPage() {
