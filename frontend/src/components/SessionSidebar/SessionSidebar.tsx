@@ -4,7 +4,7 @@ import styles from './SessionSidebar.module.css'
 import down from '../../assets/down.png'
 import SessionCard from '../SessionCard';
 import FilterPopover from '../FilterPopover';
-import { Session } from '../../Types';
+import type { Session } from '../../Types';
 
 
 interface SessionSidebarProps {

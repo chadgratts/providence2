@@ -1,4 +1,4 @@
-import { Session } from '../../Types';
+import type { Session } from '../../Types';
 import styles from './SessionInfoBox.module.css'
 
 interface SessionInfoBoxProps {
